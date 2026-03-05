@@ -5,7 +5,7 @@ jobs:
 - deployment: DeployApp
   displayName: 'Deploy FastAPI'
   environment:
-    name: 'Production'  # Name of your environment in Azure DevOps
+    name: 'ProdVMs'  # Name of your environment in Azure DevOps
     resourceType: VirtualMachine
   strategy:
     runOnce:
