@@ -3,9 +3,10 @@ trigger:
 
 jobs:
 - deployment: DeployApp
-  displayName: 'Deploy FastAPI'
+  pool:
+    name: 'Default'  # Explicitly tell it which pool your VM agent lives in
   environment:
-    name: 'ProdVMs'  # Name of your environment in Azure DevOps
+    name: 'ProdVMs'
     resourceType: VirtualMachine
   strategy:
     runOnce:
