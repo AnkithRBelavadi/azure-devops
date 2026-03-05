@@ -11,10 +11,10 @@ jobs:
   - checkout: self
 
   - script: |
-      echo "Creating virtual environment..."
-      python3 -m venv venv
-      echo "Installing dependencies into virtual environment..."
-      ./venv/bin/pip install -r requirements.txt
+        # Force a clean start for the virtual environment
+        rm -rf venv
+        python3 -m venv venv
+        ./venv/bin/pip install -r requirements.txt
     displayName: 'Install Dependencies'
 
   - script: |
