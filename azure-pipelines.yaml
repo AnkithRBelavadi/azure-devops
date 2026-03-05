@@ -11,8 +11,10 @@ jobs:
   - checkout: self
 
   - script: |
-      echo "Installing dependencies"
-      /usr/bin/python3 -m pip install -r requirements.txt
+      echo "Creating virtual environment..."
+      python3 -m venv venv
+      echo "Installing dependencies into virtual environment..."
+      ./venv/bin/pip install -r requirements.txt
     displayName: 'Install Dependencies'
 
   - script: |
@@ -22,5 +24,6 @@ jobs:
 
   - script: |
       echo "Starting FastAPI app"
-      nohup uvicorn main:app --host 0.0.0.0 --port 8000 > app.log 2>&1 &
+      # We use the python binary inside the venv to run uvicorn
+      nohup ./venv/bin/uvicorn main:app --host 0.0.0.0 --port 8000 > app.log 2>&1 &
     displayName: 'Start App'
