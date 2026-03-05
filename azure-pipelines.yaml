@@ -1,28 +1,26 @@
 trigger:
 - main
 
+pool:
+  name: 'Default'
+
 jobs:
-- deployment: DeployApp
-  pool:
-    name: 'Default'  # Explicitly tell it which pool your VM agent lives in
-    resourceType: VirtualMachine
-  strategy:
-    runOnce:
-      deploy:
-        steps:
-        - checkout: self
+- job: BuildAndDeploy
+  displayName: 'Deploy FastAPI App'
+  steps:
+  - checkout: self
 
-        - script: |
-            echo "Installing dependencies"
-            /usr/bin/python3 -m pip install -r requirements.txt
-          displayName: 'Install Dependencies'
+  - script: |
+      echo "Installing dependencies"
+      /usr/bin/python3 -m pip install -r requirements.txt
+    displayName: 'Install Dependencies'
 
-        - script: |
-            echo "Stopping old app"
-            pkill -f uvicorn || true
-          displayName: 'Stop Old App'
+  - script: |
+      echo "Stopping old app"
+      pkill -f uvicorn || true
+    displayName: 'Stop Old App'
 
-        - script: |
-            echo "Starting FastAPI app"
-            nohup uvicorn main:app --host 0.0.0.0 --port 8000 > app.log 2>&1 &
-          displayName: 'Start App'
+  - script: |
+      echo "Starting FastAPI app"
+      nohup uvicorn main:app --host 0.0.0.0 --port 8000 > app.log 2>&1 &
+    displayName: 'Start App'
