@@ -23,7 +23,12 @@ jobs:
     displayName: 'Stop Old App'
 
   - script: |
-      echo "Starting FastAPI app"
-      # We use the python binary inside the venv to run uvicorn
+      echo "Deploying FastAPI"
+      cd $(Build.SourcesDirectory)
+
+      echo "Stopping old server"
+      pkill -f uvicorn || true
+
+      echo "Starting server"
       nohup ./venv/bin/uvicorn app:app --host 0.0.0.0 --port 8000 > app.log 2>&1 &
-    displayName: 'Start App'
+    displayName: Deploy FastAPI
