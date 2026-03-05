@@ -29,4 +29,3 @@ jobs:
 - script: |
     sudo systemctl restart fastapi
   displayName: Restart FastAPI
-    displayName: Start FastAPI
