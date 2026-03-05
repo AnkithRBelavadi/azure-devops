@@ -2,35 +2,35 @@ trigger:
 - main
 
 pool:
-  name: 'Default'
+  name: Default
 
 jobs:
 - job: BuildAndDeploy
-  displayName: 'Deploy FastAPI App'
+  displayName: Deploy FastAPI App
+
   steps:
   - checkout: self
 
   - script: |
-        # Force a clean start for the virtual environment
+        echo "Installing dependencies"
+
+        # Clean virtual environment
         rm -rf venv
+
         python3 -m venv venv
         ./venv/bin/pip install -r requirements.txt
-    displayName: 'Install Dependencies'
+    displayName: Install Dependencies
 
   - script: |
-      echo "Stopping old app"
-      pkill -f uvicorn || true
-    displayName: 'Stop Old App'
+        echo "Stopping old FastAPI server"
+        pkill -f uvicorn || true
+    displayName: Stop Old App
 
-- script: |
-    echo "Deploying FastAPI"
-    cd $(Build.SourcesDirectory)
+  - script: |
+        echo "Starting FastAPI server"
 
-    echo "Stopping old server"
-    pkill -f uvicorn || true
+        cd $(Build.SourcesDirectory)
 
-    echo "Starting FastAPI"
-
-    nohup ./venv/bin/uvicorn app:app --host 0.0.0.0 --port 8000 > app.log 2>&1 &
-    disown
-  displayName: Deploy FastAPI
+        nohup ./venv/bin/uvicorn app:app --host 0.0.0.0 --port 8000 > app.log 2>&1 &
+        disown
+    displayName: Start FastAPI
