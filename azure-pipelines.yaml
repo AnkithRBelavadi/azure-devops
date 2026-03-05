@@ -26,6 +26,7 @@ jobs:
         pkill -f uvicorn || true
     displayName: Stop Old App
 
-- script: |
-    sudo systemctl restart fastapi
-  displayName: Restart FastAPI
+  - script: |
+        echo "Restarting FastAPI service"
+        sudo systemctl restart fastapi
+    displayName: Restart FastAPI
